@@ -8,7 +8,6 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend.yml'
-      - 'pnpm-lock.yaml'
   pull_request:
     branches:
       - main
@@ -16,7 +15,6 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend.yml'
-      - 'pnpm-lock.yaml'
 
 jobs:
   build:
@@ -39,21 +37,22 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: cd frontend && pnpm install --frozen-lockfile
 
       - name: Type check
-        run: pnpm --filter frontend type-check
+        run: cd frontend && pnpm type-check
 
       - name: Lint
-        run: pnpm --filter frontend lint
+        run: cd frontend && pnpm lint
 
       - name: Format check
-        run: pnpm --filter frontend format:check
+        run: cd frontend && pnpm format:check
 
       - name: Build
-        run: pnpm --filter frontend build
+        run: cd frontend && pnpm build
 
   test:
     runs-on: ubuntu-latest
@@ -70,10 +69,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: cd frontend && pnpm install --frozen-lockfile
 
       - name: Run tests
+        run: cd frontend && pnpm
         run: pnpm --filter frontend test 2>/dev/null || echo "No tests configured"
