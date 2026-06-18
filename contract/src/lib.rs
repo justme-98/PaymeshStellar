@@ -142,11 +142,7 @@ impl AutoShareContract {
     /// Returns the computed share each member would receive for `total_amount`,
     /// using the same floor-division + last-member-dust logic as `distribute`.
     /// This is a pure read: no tokens are moved.
-    pub fn get_member_shares(
-        env: Env,
-        group_id: BytesN<32>,
-        total_amount: i128,
-    ) -> Vec<i128> {
+    pub fn get_member_shares(env: Env, group_id: BytesN<32>, total_amount: i128) -> Vec<i128> {
         let details: AutoShareDetails = env
             .storage()
             .persistent()
