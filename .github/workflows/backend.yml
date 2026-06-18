@@ -72,5 +72,8 @@ jobs:
       - name: Install dependencies
         run: cd backend && pnpm install --no-frozen-lockfile
 
+      - name: Build
+        run: cd backend && pnpm build
+
       - name: Run tests
         run: cd backend && pnpm test
